@@ -1,0 +1,21 @@
+{
+  "name": "mysqlwriter",
+  "parameter": {
+    "connection": [
+      {
+        "jdbcUrl": "",
+        "username": "",
+        "password": "",
+        "table": [
+          {
+            "name": "",
+            "column": []
+          }
+        ]
+      }
+    ],
+    "preSql": [],
+    "session": [],
+    "writeMode": "replace"
+  }
+}
