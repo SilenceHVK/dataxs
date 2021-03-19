@@ -2,6 +2,10 @@
 
 DataXS 是基于 DataX 的私人定制版，感谢 [DataX](https://github.com/alibaba/DataX) 团队
 
+```bash
+mvn -U clean package assembly:assembly -Dmaven.test.skip=true
+```
+
 ### 区别
 
 - 对 DataX 对部分功能进行删除，删除了一些依赖依赖库
@@ -13,13 +17,13 @@ DataXS 是基于 DataX 的私人定制版，感谢 [DataX](https://github.com/al
         "content": [
             {
                 "reader": {
-                    "name": "mysqlreader", 
+                    "name": "mysqlreader",
                     "parameter": {
                         "connection": [
                             {
-                                "jdbcUrl": "", 
+                                "jdbcUrl": "",
                                 "username": "",
-                                "password": "", 
+                                "password": "",
                                 "table": [
                                     {
                                       "name": "",
@@ -27,33 +31,33 @@ DataXS 是基于 DataX 的私人定制版，感谢 [DataX](https://github.com/al
                                     }
                                 ]
                             }
-                        ], 
+                        ],
                         "where": ""
                     }
-                }, 
+                },
                 "writer": {
-                    "name": "mysqlwriter", 
+                    "name": "mysqlwriter",
                     "parameter": {
                         "connection": [
                             {
-                                "jdbcUrl": "", 
+                                "jdbcUrl": "",
                                 "username": "",
-                                "password": "", 
+                                "password": "",
                                 "table": [
                                     {
                                        "name": "",
-                                       "column": [], 
+                                       "column": [],
                                     }
                                 ]
                             }
-                        ], 
-                        "preSql": [], 
-                        "session": [], 
+                        ],
+                        "preSql": [],
+                        "session": [],
                         "writeMode": "replace"
                     }
                 }
             }
-        ], 
+        ],
         "setting": {
             "speed": {
                 "channel": ""

@@ -7,33 +7,38 @@ import java.sql.Connection;
  */
 public class JdbcConnectionFactory implements ConnectionFactory {
 
-    private DataBaseType dataBaseType;
+	private DataBaseType dataBaseType;
 
-    private String jdbcUrl;
+	private String jdbcUrl;
 
-    private String userName;
+	private String userName;
 
-    private String password;
+	private String password;
 
-    public JdbcConnectionFactory(DataBaseType dataBaseType, String jdbcUrl, String userName, String password) {
-        this.dataBaseType = dataBaseType;
-        this.jdbcUrl = jdbcUrl;
-        this.userName = userName;
-        this.password = password;
-    }
+	public JdbcConnectionFactory(DataBaseType dataBaseType, String jdbcUrl, String userName, String password) {
+		this.dataBaseType = dataBaseType;
+		this.jdbcUrl = jdbcUrl;
+		this.userName = userName;
+		this.password = password;
+	}
 
-    @Override
-    public Connection getConnecttion() {
-        return DBUtil.getConnection(dataBaseType, jdbcUrl, userName, password);
-    }
+	@Override
+	public DataBaseType getDataBaseType() {
+		return dataBaseType;
+	}
 
-    @Override
-    public Connection getConnecttionWithoutRetry() {
-        return DBUtil.getConnectionWithoutRetry(dataBaseType, jdbcUrl, userName, password);
-    }
+	@Override
+	public Connection getConnecttion() {
+		return DBUtil.getConnection(dataBaseType, jdbcUrl, userName, password);
+	}
 
-    @Override
-    public String getConnectionInfo() {
-        return "jdbcUrl:" + jdbcUrl;
-    }
+	@Override
+	public Connection getConnecttionWithoutRetry() {
+		return DBUtil.getConnectionWithoutRetry(dataBaseType, jdbcUrl, userName, password);
+	}
+
+	@Override
+	public String getConnectionInfo() {
+		return "jdbcUrl:" + jdbcUrl;
+	}
 }

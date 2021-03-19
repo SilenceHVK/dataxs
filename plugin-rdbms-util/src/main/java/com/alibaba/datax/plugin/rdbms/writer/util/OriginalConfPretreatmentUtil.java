@@ -68,7 +68,7 @@ public final class OriginalConfPretreatmentUtil {
     }
 
     public static void dealColumnConf(Configuration originalConfig, ConnectionFactory connectionFactory, String oneTable, List<String> userConfiguredColumns, int connectionIndex, int tableIndex) {
-        boolean isPreCheck = originalConfig.getBool(Key.DRYRUN, false);
+    	boolean isPreCheck = originalConfig.getBool(Key.DRYRUN, false);
         List<String> allColumns;
         if (isPreCheck){
             allColumns = DBUtil.getTableColumnsByConn(DATABASE_TYPE,connectionFactory.getConnecttionWithoutRetry(), oneTable, connectionFactory.getConnectionInfo());
@@ -77,17 +77,18 @@ public final class OriginalConfPretreatmentUtil {
         }
         LOG.info("table:[{}] all columns:[\n{}\n].", oneTable, StringUtils.join(allColumns, ","));
 
+
         if (1 == userConfiguredColumns.size() && "*".equals(userConfiguredColumns.get(0))) {
             LOG.warn("您的配置文件中的列配置信息存在风险. 因为您配置的写入数据库表的列为*，当您的表字段个数、类型有变动时，可能影响任务正确性甚至会运行出错。请检查您的配置并作出修改.");
             // 回填其值，需要以 String 的方式转交后续处理
-            originalConfig.set(String.format("%s[%d].%s[%d].%s",Constant.CONN_MARK, connectionIndex, Key.TABLE, tableIndex, Key.COLUMN), allColumns);
+            originalConfig.set(String.format("%s[%d].%s[%d].%s",Constant.CONN_MARK, connectionIndex, Key.TABLE, tableIndex, Key.COLUMN), convertKeywordCloumns(connectionFactory,allColumns));
         } else if (userConfiguredColumns.size() > allColumns.size()) {
             throw DataXException.asDataXException(DBUtilErrorCode.ILLEGAL_VALUE,
                     String.format("您的配置文件中的列配置信息有误. 因为您所配置的写入数据库表的字段个数:%s 大于目的表的总字段总个数:%s. 请检查您的配置并作出修改.",
                             userConfiguredColumns.size(), allColumns.size()));
         } else {
             // 确保用户配置的 column 不重复
-            ListUtil.makeSureNoValueDuplicate(userConfiguredColumns, false);
+            ListUtil.makeSureNoValueDuplicate(convertKeywordCloumns(connectionFactory,userConfiguredColumns), false);
             // 检查列是否都为数据库表中正确的列（通过执行一次 select column from table 进行判断）
             DBUtil.getColumnMetaData(connectionFactory.getConnecttion(), oneTable,StringUtils.join(userConfiguredColumns, ","));
         }
@@ -146,5 +147,40 @@ public final class OriginalConfPretreatmentUtil {
         }
         return false;
     }
+
+	/**
+	 * 转换 Cloumn 关键字
+	 * @param connectionFactory
+	 * @param columns
+	 * @return
+	 */
+	public static List<String> convertKeywordCloumns(final ConnectionFactory connectionFactory, List<String> columns){
+			List<String> toColumns = new ArrayList<>();
+			columns.forEach(column -> {
+				column = column.trim();
+				column = column.replace("[", "");
+				column = column.replace("]", "");
+				column = column.replace("`", "");
+				column = column.replace("\"", "");
+				column = column.replace("'", "");
+
+				switch (connectionFactory.getDataBaseType()) {
+					case MySql:
+						column = String.format("`%s`", column);
+						break;
+					case SQLServer:
+						column =  String.format("[%s]", column);
+						break;
+					case PostgreSQL:
+					case Oracle:
+						column =  String.format("\"%s\"", column);
+						break;
+					default:
+						break;
+				}
+				toColumns.add(column);
+			});
+			return toColumns;
+		}
 
 }

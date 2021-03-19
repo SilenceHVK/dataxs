@@ -7,6 +7,8 @@ import java.sql.Connection;
  */
 public interface ConnectionFactory {
 
+	  public DataBaseType getDataBaseType();
+
     public Connection getConnecttion();
 
     public Connection getConnecttionWithoutRetry();
