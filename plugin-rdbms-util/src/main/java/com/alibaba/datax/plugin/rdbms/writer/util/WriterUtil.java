@@ -21,26 +21,9 @@ import java.util.*;
 
 public final class WriterUtil {
     private static final Logger LOG = LoggerFactory.getLogger(WriterUtil.class);
-
-    //TODO 切分报错
     public static List<Configuration> doSplit(Configuration simplifiedConf, int adviceNumber) {
         List<Configuration> splitResultConfigs = new ArrayList<Configuration>();
         int tableNumber = simplifiedConf.getInt(Constant.TABLE_NUMBER_MARK);
-
-        //处理单表的情况
-        if (tableNumber == 1) {
-            //由于在之前的  master prepare 中已经把 table,jdbcUrl 提取出来，所以这里处理十分简单
-            for (int j = 0; j < adviceNumber; j++) {
-                splitResultConfigs.add(simplifiedConf.clone());
-            }
-            return splitResultConfigs;
-        }
-
-//        if (tableNumber != adviceNumber) {
-//            throw DataXException.asDataXException(DBUtilErrorCode.CONF_ERROR,
-//                    String.format("您的配置文件中的列配置信息有误. 您要写入的目的端的表个数是:%s , 但是根据系统建议需要切分的份数是：%s. 请检查您的配置并作出修改.",
-//                            tableNumber, adviceNumber));
-//        }
 
         String jdbcUrl;
         List<String> preSqls = simplifiedConf.getList(Key.PRE_SQL, String.class);
