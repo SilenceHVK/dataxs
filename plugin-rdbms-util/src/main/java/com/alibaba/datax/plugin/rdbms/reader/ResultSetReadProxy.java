@@ -1,6 +1,7 @@
 package com.alibaba.datax.plugin.rdbms.reader;
 
 import com.alibaba.datax.common.element.*;
+import com.alibaba.datax.common.element.Record;
 import com.alibaba.datax.common.exception.DataXException;
 import com.alibaba.datax.common.plugin.RecordSender;
 import com.alibaba.datax.common.plugin.TaskPluginCollector;
@@ -22,8 +23,8 @@ public class ResultSetReadProxy {
 	private static final byte[] EMPTY_CHAR_ARRAY = new byte[0];
 
 	//TODO
-	public static void transportOneRecord(RecordSender recordSender, ResultSet rs, 
-			ResultSetMetaData metaData, int columnNumber, String mandatoryEncoding, 
+	public static void transportOneRecord(RecordSender recordSender, ResultSet rs,
+			ResultSetMetaData metaData, int columnNumber, String mandatoryEncoding,
 			TaskPluginCollector taskPluginCollector) {
 		Record record = recordSender.createRecord();
 
@@ -41,7 +42,7 @@ public class ResultSetReadProxy {
 					if(StringUtils.isBlank(mandatoryEncoding)){
 						rawData = rs.getString(i);
 					}else{
-						rawData = new String((rs.getBytes(i) == null ? EMPTY_CHAR_ARRAY : 
+						rawData = new String((rs.getBytes(i) == null ? EMPTY_CHAR_ARRAY :
 							rs.getBytes(i)), mandatoryEncoding);
 					}
 					record.addColumn(new StringColumn(rawData));

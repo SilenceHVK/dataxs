@@ -23,7 +23,8 @@ public enum DataBaseType {
 	ADS("ads", "com.mysql.cj.jdbc.Driver"),
 	ClickHouse("clickhouse", "ru.yandex.clickhouse.ClickHouseDriver"),
 	KingbaseES("kingbasees", "com.kingbase8.Driver"),
-	Oscar("oscar", "com.oscar.Driver");
+	Oscar("oscar", "com.oscar.Driver"),
+	DUCKDB("duckdb", "org.duckdb.DuckDBDriver");
 
 
 	private String typeName;
@@ -66,6 +67,8 @@ public enum DataBaseType {
 			case KingbaseES:
 				break;
 			case Oscar:
+				break;
+			case DUCKDB:
 				break;
 			default:
 				throw DataXException.asDataXException(DBUtilErrorCode.UNSUPPORTED_TYPE, "unsupported database type.");
@@ -110,6 +113,8 @@ public enum DataBaseType {
 				break;
 			case Oscar:
 				break;
+			case DUCKDB:
+				break;
 			default:
 				throw DataXException.asDataXException(DBUtilErrorCode.UNSUPPORTED_TYPE, "unsupported database type.");
 		}
@@ -136,6 +141,7 @@ public enum DataBaseType {
 			case PostgreSQL:
 			case KingbaseES:
 			case Oscar:
+			case DUCKDB:
 				break;
 			default:
 				throw DataXException.asDataXException(DBUtilErrorCode.UNSUPPORTED_TYPE, "unsupported database type.");
@@ -184,6 +190,8 @@ public enum DataBaseType {
 			case KingbaseES:
 				break;
 			case Oscar:
+				break;
+			case DUCKDB:
 				break;
 			default:
 				throw DataXException.asDataXException(DBUtilErrorCode.UNSUPPORTED_TYPE, "unsupported database type");

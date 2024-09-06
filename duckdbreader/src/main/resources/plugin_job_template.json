@@ -1,0 +1,19 @@
+{
+	"name": "duckdbreader",
+	"parameter": {
+		"connection": [
+			{
+				"jdbcUrl": "",
+				"username": "",
+				"password": "",
+				"table": [
+					{
+						"name": "",
+						"column": []
+					}
+				]
+			}
+		],
+		"where": ""
+	}
+}
